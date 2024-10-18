@@ -44,31 +44,6 @@ class StartupHelper private constructor() {
 
         /**
          * Starts a new JVM if the application was started on macOS without the
-         * `-XstartOnFirstThread` argument. This also includes some code for
-         * Windows, for the case where the user's home directory includes certain
-         * non-Latin-alphabet characters (without this code, most LWJGL3 apps fail
-         * immediately for those users). Returns whether a new JVM was started and
-         * thus no code should be executed.
-         *
-         *
-         * <u>Usage:</u>
-         *
-         * <pre>`
-         * public static void main(String... args) {
-         * if (StartupHelper.startNewJvmIfRequired(true)) return; // This handles macOS support and helps on Windows.
-         * // after this is the actual main method code
-         * }
-        `</pre> *
-         *
-         * @param redirectOutput
-         * whether the output of the new JVM should be rerouted to the
-         * old JVM, so it can be accessed in the same place; keeps the
-         * old JVM running if enabled
-         * @return whether a new JVM was started and thus no code should be executed
-         * in this one
-         */
-        /**
-         * Starts a new JVM if the application was started on macOS without the
          * `-XstartOnFirstThread` argument. Returns whether a new JVM was
          * started and thus no code should be executed. Redirects the output of the
          * new JVM to the old one.
@@ -82,7 +57,10 @@ class StartupHelper private constructor() {
          * // the actual main method code
          * }
         </pre> *
-         *
+         * @param redirectOutput
+         * whether the output of the new JVM should be rerouted to the
+         * old JVM, so it can be accessed in the same place; keeps the
+         * old JVM running if enabled
          * @return whether a new JVM was started and thus no code should be executed
          * in this one
          */
@@ -108,7 +86,7 @@ class StartupHelper private constructor() {
             val pid = LibC.getpid()
 
             // check whether -XstartOnFirstThread is enabled
-            if ("1" == System.getenv("JAVA_STARTED_ON_FIRST_THREAD_" + pid)) {
+            if ("1" == System.getenv("JAVA_STARTED_ON_FIRST_THREAD_$pid")) {
                 return false
             }
 
@@ -123,7 +101,7 @@ class StartupHelper private constructor() {
 
             // Restart the JVM with -XstartOnFirstThread
             val jvmArgs = ArrayList<String?>()
-            val separator = System.getProperty("file.separator")
+            val separator = File.pathSeparator
             // The following line is used assuming you target Java 8, the minimum for LWJGL3.
             val javaExecPath = System.getProperty("java.home") + separator + "bin" + separator + "java"
 
@@ -138,15 +116,15 @@ class StartupHelper private constructor() {
 
             jvmArgs.add(javaExecPath)
             jvmArgs.add("-XstartOnFirstThread")
-            jvmArgs.add("-D" + JVM_RESTARTED_ARG + "=true")
-            jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().getInputArguments())
+            jvmArgs.add("-D$JVM_RESTARTED_ARG=true")
+            jvmArgs.addAll(ManagementFactory.getRuntimeMXBean().inputArguments)
             jvmArgs.add("-cp")
             jvmArgs.add(System.getProperty("java.class.path"))
-            var mainClass = System.getenv("JAVA_MAIN_CLASS_" + pid)
+            var mainClass = System.getenv("JAVA_MAIN_CLASS_$pid")
             if (mainClass == null) {
-                val trace = Thread.currentThread().getStackTrace()
+                val trace = Thread.currentThread().stackTrace
                 if (trace.size > 0) {
-                    mainClass = trace[trace.size - 1]!!.getClassName()
+                    mainClass = trace[trace.size - 1]!!.className
                 } else {
                     System.err.println("The main class could not be determined.")
                     return false
@@ -162,7 +140,7 @@ class StartupHelper private constructor() {
                     val process = (ProcessBuilder(jvmArgs))
                         .redirectErrorStream(true).start()
                     val processOutput = BufferedReader(
-                        InputStreamReader(process.getInputStream())
+                        InputStreamReader(process.inputStream)
                     )
                     var line: String?
 
