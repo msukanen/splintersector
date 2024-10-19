@@ -1,5 +1,4 @@
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
-eclipse.project.name = appName + '-core'
 
 dependencies {
   api "com.badlogicgames.ashley:ashley:$ashleyVersion"
@@ -23,8 +22,11 @@ dependencies {
   api "io.github.libktx:ktx-tiled:$ktxVersion"
   api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
   api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+  api(project(":common"))
 
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+  testImplementation("org.jetbrains.kotlin:kotlin-test")
 }

@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 buildscript {
   repositories {
     mavenCentral()
@@ -15,10 +17,7 @@ buildscript {
 }
 
 allprojects {
-  apply plugin: 'eclipse'
   apply plugin: 'idea'
-
-  // This allows you to "Build and run using IntelliJ IDEA", an option in IDEA's Settings.
   idea {
     module {
       outputDir file('build/classes/java/main')
@@ -55,8 +54,8 @@ configure(subprojects) {
   compileJava {
     options.incremental = true
   }
-  compileKotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_22)
-  
+  compileKotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_22)
+
 }
 
 subprojects {
@@ -72,5 +71,3 @@ subprojects {
     maven { url 'https://jitpack.io' }
   }
 }
-
-eclipse.project.name = 'SplinterSector' + '-parent'

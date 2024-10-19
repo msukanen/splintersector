@@ -1,0 +1,18 @@
+plugins {
+}
+
+group = 'net.msukanen'
+version = '0.1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+  testImplementation("org.jetbrains.kotlin:kotlin-test")
+}
+
+test {
+    useJUnitPlatform()
+}

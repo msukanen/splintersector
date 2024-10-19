@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.ScreenUtils
 import com.badlogic.gdx.utils.viewport.FitViewport
 import ktx.app.KtxApplicationAdapter
 import ktx.graphics.*
+import net.msukanen.splintersector.common.random
 
 /**
  * Just maining my business here.

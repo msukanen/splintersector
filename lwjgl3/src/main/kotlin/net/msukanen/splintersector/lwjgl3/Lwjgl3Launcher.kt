@@ -2,7 +2,7 @@ package net.msukanen.splintersector.lwjgl3
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import net.msukanen.splintersector.AspectRatio
+import net.msukanen.splintersector.util.gfx.AspectRatio
 import net.msukanen.splintersector.Main
 
 /** Launches the desktop (LWJGL3) application.  */

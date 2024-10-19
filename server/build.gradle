@@ -1,20 +1,26 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+  id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
+}
+
 apply plugin: 'application'
 apply plugin: 'org.jetbrains.kotlin.jvm'
-
 
 java.sourceCompatibility = 22
 java.targetCompatibility = 22
 if (JavaVersion.current().isJava9Compatible()) {
         compileJava.options.release.set(22)
 }
-kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_22)
+kotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_22)
 
 mainClassName = 'net.msukanen.splintersector.server.ServerLauncher'
 application.setMainClass(mainClassName)
-eclipse.project.name = appName + '-server'
 
 dependencies {
-
+  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+  testImplementation("org.jetbrains.kotlin:kotlin-test")
+  api(project(":common"))
 }
 
 jar {
@@ -40,4 +46,8 @@ jar {
 
 // Equivalent to the jar task; here for compatibility with gdx-setup.
 task dist(dependsOn: [jar]) {
+}
+
+test {
+  useJUnitPlatform()
 }

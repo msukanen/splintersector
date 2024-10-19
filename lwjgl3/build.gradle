@@ -15,19 +15,18 @@ plugins {
 }
 apply plugin: 'org.jetbrains.kotlin.jvm'
 
-
 import io.github.fourlastor.construo.Target
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 sourceSets.main.resources.srcDirs += [ rootProject.file('assets').path ]
 mainClassName = 'net.msukanen.splintersector.lwjgl3.Lwjgl3Launcher'
 application.setMainClass(mainClassName)
-eclipse.project.name = appName + '-lwjgl3'
 java.sourceCompatibility = 22
 java.targetCompatibility = 22
 if (JavaVersion.current().isJava9Compatible()) {
         compileJava.options.release.set(22)
 }
-kotlin.compilerOptions.jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_22)
+kotlin.compilerOptions.jvmTarget.set(JvmTarget.JVM_22)
 
 dependencies {
   implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:$gdxControllersVersion"
