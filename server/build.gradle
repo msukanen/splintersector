@@ -18,7 +18,8 @@ mainClassName = 'net.msukanen.splintersector.server.ServerLauncher'
 application.setMainClass(mainClassName)
 
 dependencies {
-  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+  api "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationJsonVersion"
+  api "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion"
   testImplementation("org.jetbrains.kotlin:kotlin-test")
   api(project(":common"))
 }

@@ -1,5 +1,7 @@
 package net.msukanen.splintersector
 
-class Room() {
+import dto.RoomDTO
+
+class Room(private val dto: RoomDTO) {
 
 }

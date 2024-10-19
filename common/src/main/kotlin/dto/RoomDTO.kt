@@ -2,7 +2,7 @@ package dto
 
 import kotlinx.serialization.Serializable
 
-@kotlinx.serialization.Serializable
+@Serializable
 data class RoomDTO(
     val id: Int,
     val name: String,
