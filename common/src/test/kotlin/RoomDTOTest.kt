@@ -13,7 +13,6 @@ class RoomDTOTest {
 
     @Test
     fun room() {
-        val
     }
 
     companion object {

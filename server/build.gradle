@@ -19,7 +19,7 @@ application.setMainClass(mainClassName)
 
 dependencies {
   api "org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationJsonVersion"
-  api "org.jetbrains.kotlinx:kotlinx-coroutines-core-jvm:$kotlinxCoroutinesVersion"
+  api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
   testImplementation("org.jetbrains.kotlin:kotlin-test")
   api(project(":common"))
 }
