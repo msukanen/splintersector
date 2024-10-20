@@ -10,13 +10,24 @@ import kotlin.test.assertTrue
 @ExtendWith(ServerLauncherUmbrella::class)
 class ServerLauncherTest {
     @Test
-    fun fetchMainAPI() {
+    fun `fetch main API info`() {
         val url = URI.create("http://localhost:$SERVER_PORT/splnsect/api").toURL()
         val connection = url.openConnection() as HttpURLConnection
         connection.requestMethod = "GET"
         assertTrue(connection.responseCode == HttpURLConnection.HTTP_OK,
                    "Expected HTTP_OK (200) but got ${connection.responseCode} instead")
         val json = BufferedReader(InputStreamReader(connection.inputStream)).readText()
+        println(json)
+    }
+
+    @Test
+    fun `send an unhandled GET request`() {
+        val url = URI.create("http://localhost:$SERVER_PORT/splnsect/room").toURL()
+        val connection = url.openConnection() as HttpURLConnection
+        connection.requestMethod = "GET"
+        assertTrue(connection.responseCode == HttpURLConnection.HTTP_NOT_FOUND,
+                   "Expected HTTP_NOT_FOUND (404) but got ${connection.responseCode} instead")
+        val json = BufferedReader(InputStreamReader(connection.errorStream)).readText()
         println(json)
     }
 }
