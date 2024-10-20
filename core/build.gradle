@@ -1,3 +1,7 @@
+plugins {
+  id("org.jetbrains.kotlin.plugin.serialization") version "2.0.20"
+}
+
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 dependencies {
@@ -8,6 +12,7 @@ dependencies {
   api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
   api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
   api "com.github.MrStahlfelge.gdx-websockets:core:$websocketVersion"
   api "com.github.crykn.guacamole:core:$guacamoleVersion"
   api "com.github.crykn.guacamole:gdx:$guacamoleVersion"
@@ -29,4 +34,11 @@ dependencies {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
   testImplementation("org.jetbrains.kotlin:kotlin-test")
+  testImplementation("org.mockito:mockito-core:5.12.0")
+  testImplementation("com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop")
+  testImplementation project(":server")
+}
+
+test {
+  useJUnitPlatform()
 }
