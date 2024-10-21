@@ -1,5 +1,6 @@
 package net.msukanen.splintersector.server
 
+import Query
 import kotlinx.coroutines.*
 import java.io.BufferedReader
 import java.io.InputStreamReader
@@ -84,7 +85,7 @@ private fun Socket.handleReq() {
  * Handle incoming GET request.
  */
 private fun PrintWriter.handleGetRequest(getPath: () -> String) = when (getPath()) {
-    "/splnsect/api" -> describeAPI
+    "/splnsect/api" -> describeAPI(getPath())
     else -> {
         // Anything what is not handled, shall fall through here:
         this.sendError(HttpURLConnection.HTTP_NOT_FOUND)
@@ -101,13 +102,29 @@ private val PrintWriter.fakePaywall get() = this.sendError(HttpURLConnection.HTT
 /**
  * Describe the API in JSON format.
  */
-private val PrintWriter.describeAPI get() = this.send {"""{
-    |   "call": [
-    |        {"room": "fetch info about a specific room"},
-    |        {"item": "fetch info about a specific item"},
-    |        {"monster": "fetch info about a specific monster"}
-    |    ]
-    |}""".trimMargin()}
+private fun PrintWriter.describeAPI(part: String?) = this.send {
+    val query = Query(part)
+    when (query.path) {
+        // root query:
+        "" -> """{
+            |   "call": [
+            |        {"/splnsect/room": "fetch info about a specific room"},
+            |        {"/splnsect/item": "fetch info about a specific item"},
+            |        {"/splnsect/monster": "fetch info about a specific monster"}
+            |    ]
+            |}""".trimMargin()
+        // describe /room usage:
+        "/splnsect/api/room" -> """{
+            |   "call": [
+            |       {"/splnsect/room/id=x": "fetch room id `x`"}
+            |   ]
+            |}""".trimMargin()
+        // TODO... more descriptions.
+        else -> """{
+            |
+            |}""".trimMargin()
+    }
+}
 
 /**
  * Send something, whatever the something might be.
